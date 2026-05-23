@@ -1,0 +1,47 @@
+# --- Paths --------------------------------------------------------------------
+# Use "." if you run the script from inside the ligand_parameterization folder,
+# or set an absolute path.
+base_dir: "."
+
+# Folder containing one .pdb per ligand (relative to base_dir).
+# Drop your ligand PDB files here before running setup.
+ligands_dir: "ligands"
+
+# Folder where parameterization outputs will be written (one subdir per ligand).
+# Each subdir will contain: <ligand>.mol2, <ligand>.frcmod, <ligand>.lib
+output_dir: "output"
+
+# --- AMBER / AmberTools -------------------------------------------------------
+amber:
+  # Module to load on the cluster for the CPU parameterization jobs.
+  # Leave empty if AmberTools is already in PATH (e.g. conda environment).
+  cpu_module: "ambertools/24"
+
+# --- SLURM (CPU-only) ---------------------------------------------------------
+# Parameterization uses antechamber/parmchk2/tleap — no GPU required.
+# Jobs are submitted one per ligand and run in parallel.
+# Any key written under cpu is emitted verbatim as #SBATCH --key=value.
+slurm:
+  cpu:
+    time: "24:00:00"
+    ntasks: 1
+    cpus-per-task: 4
+    mem: "8G"
+    partition: partition_name
+
+# --- Ligand parameterization --------------------------------------------------
+ligand:
+  # Net formal charge.
+  # "auto"  -> detected per ligand via RDKit (requires all H + correct geometry).
+  # integer -> fixed value applied to every ligand (use when RDKit fails).
+  net_charge: "auto"
+
+  multiplicity: 1          # spin multiplicity (1 = closed-shell singlet)
+  charge_method: "bcc"     # AM1-BCC; alternatives: "resp", "gas"
+
+# --- Force field --------------------------------------------------------------
+# Must match the force field used in your downstream MD protocol.
+# leaprc.gaff  -> GAFF 1 (legacy)
+# leaprc.gaff2 -> GAFF 2 (recommended for new work)
+forcefield:
+  ligand: "leaprc.gaff"
