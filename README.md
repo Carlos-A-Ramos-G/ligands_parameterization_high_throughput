@@ -5,12 +5,16 @@ High-throughput AMBER/GAFF parameterization for organic protein-ligand binders.
 Generates .mol2/.frcmod/.lib files for entire compound libraries — in parallel
 locally or via SLURM on HPC clusters.
 
-Why separate?
-  Parameterization (antechamber AM1-BCC) is slow (30-90 min/ligand),
-  CPU-only, and only needs to run once per compound. Separating it lets
-  you build a ready-to-use parameter library before committing to any
-  simulation, and submit jobs to CPU queues rather than GPU nodes.
+This protocol describes the parameterization of a ligand set used to study 
+the binding free energy of these compounds to the caspase-1 enzyme, a key 
+inflammatory target implicated in cellular inflammation-related diseases such 
+as rheumatoid arthritis, type 2 diabetes, atherosclerosis and Alzheimer's.
+Accurate parameterization is essential to ensure reliable molecular dynamics 
+simulations and free energy calculations, enabling a rigorous characterization 
+of ligand–enzyme interactions.
 
+The complete study can be found here:
+https://www.sciencedirect.com/science/article/abs/pii/S0223523419301886
 
 PREREQUISITES
 -------------
@@ -30,7 +34,7 @@ Install Python dependencies using the provided requirements.txt:
 
     pip install -r requirements.txt
 
-  Note: if you hit binary compatibility issues with rdkit (e.g. Python
+  Note: if you hit binary compatibility issues with rdkit (e.g. PythonB
   version mismatches), prefer the conda-forge install over pip.
 
 
@@ -180,7 +184,7 @@ OUTPUT STRUCTURE
 USING THE OUTPUTS
 -----------------
 
-Each output/<lig>/ directory contains the three files that tleap needs
+Each output/<lig>/ directory contains the two files that tleap needs
 to build any AMBER topology:
 
     loadamberparams  /path/to/output/<lig>/<lig>.frcmod
